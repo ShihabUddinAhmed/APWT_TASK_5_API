@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    </head>
+    <body onload="loadbooks()">
+        <div>
+            <h1 class="text text-lg-center" style="margin-top: 50px;">Book Details:</h1>
+        </div>
+        <div style="justify-content: center;">
+            <table class="table table-responsive" style="margin-top: 50px;">
+                <tr class="column text-center">
+                    <td>
+                        <img src="" id="bookimg" height="500px">
+                    </td>
+                </tr>
+                <tr class="column text-center">
+                    <td>
+                        <h2 id="bookname"></h2>
+                    </td>
+                </tr>
+                <tr class="column text-center">
+                    <td>
+                        <h3>Author: </h3><h3 id="bookauthor"></h3>
+                    </td>
+                </tr>
+                <tr class="column text-center">
+                    <td>
+                        <h4>Publish Date: </h4><h4 id="pubdate"></h4>
+                    </td>
+                </tr>
+                <tr class="column text-center">
+                    <td>
+                        <h4>Edition: </h4> <h4 id="edition"></h4>
+                    </td>
+                </tr>
+                <tr class="column text-center">
+                    <td>
+                        <h4>Stock: </h4><h4 id="stock"></h4>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        <script>
+            function loadbooks()
+            {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if(this.readyState==4 && this.status==200)
+                    {
+                        var iter=0;
+                        var object = JSON.parse(this.responseText);
+                        var count = Object.keys(object).length;
+                        document.getElementById('bookimg').src = object[0].cover;
+                        document.getElementById('bookname').innerHTML = '<strong>'+object[0].name+'</strong>';
+                        document.getElementById('bookauthor').innerHTML = object[0].authors;
+                        document.getElementById('pubdate').innerHTML = object[0].publishdate;
+                        document.getElementById('edition').innerHTML = object[0].edition;
+                        document.getElementById('stock').innerHTML = object[0].stock;
+                    }
+                };
+                xhttp.open("GET", "http://127.0.0.1:8000/api/library/book/name/The%20Magic%20Forest");
+                xhttp.send();
+            }
+        </script>
+    </body>
+</html>
